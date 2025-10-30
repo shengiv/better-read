@@ -59,9 +59,9 @@ def lambda_handler(event, context):
                 results["checks"][f"{table_name}_exists"] = True
                 
                 # Check if table has reasonable amount of data
-                if table_name == "book-metadata":
+                if table_name == "Books":
                     has_sufficient_data = item_count >= MIN_EXPECTED_BOOKS
-                else:  # book-similarities
+                else:  # BookSimilarities
                     has_sufficient_data = item_count >= MIN_EXPECTED_SIMILARITIES
                 
                 results["checks"][f"{table_name}_has_data"] = has_sufficient_data
