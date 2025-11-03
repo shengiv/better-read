@@ -18,10 +18,17 @@ The pipeline is triggered automatically when new raw data files are uploaded to 
 3. **Input Validation Lambda** 
    - In order to proceed to the glue job, the laambda function first checks if the necessary input is present
    - Both `Books.csv` and `Ratings.csv` need to be present before the pipeline proceeds with the next stage.
-3. **DynamoDB Tables** — Store processed data:
+4. **Glue Job - performs a series of Extract, Transform, Load steps**
+   - Data ingestion: CSV files are read from S3 into Spark DataFrames.
+   - Data cleaning: Ratings of zero are treated as implicit feedback and are filtered out for better model performance.
+   - Training the ALS model: The Alternating Least Squares algorithm is applied to the training data to learn latent factors representing user and book preferences. Model parameters include a maximum of 10 iterations, a regularization parameter of 0.1, and a latent factor rank of 10. The coldStartStrategy is set to drop to handle users or items with missing ratings in the test set.
+   - Similarity computation: Item factors produced by the ALS model are extracted and used to compute a cosine similarity matrix. For each book, the top 20 most similar books are identified. These results form the basis of the recommendation dataset.
+   - Data loading: Book metadata and similarity scores are converted to Glue DynamicFrames and written to respective DynamoDB tables.
+
+6. **DynamoDB Tables** — Store processed data:
    - `Books`: Metadata for each book.
    - `BookSimilarities`: Top-20 similar books and similarity scores.
-4. **Output Verification Lambda**
+7. **Output Verification Lambda**
    - Confirms that the Glue job ran successfully.
    - Verifies that DynamoDB tables `Books` and `BookSimilarities` exist and contain a minimum number of records.
    - Returns a summary of checks and overall verification status.
