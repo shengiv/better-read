@@ -20,7 +20,7 @@ The pipeline is triggered automatically when new raw data files are uploaded to 
    - Both `Books.csv` and `Ratings.csv` need to be present before the pipeline proceeds with the next stage.
 3. **DynamoDB Tables** — Store processed data:
    - `Books`: Metadata for each book.
-   - `BookSimilarities`: Top-N similar books and similarity scores.
+   - `BookSimilarities`: Top-20 similar books and similarity scores.
 4. **Output Verification Lambda**
    - Confirms that the Glue job ran successfully.
    - Verifies that DynamoDB tables `Books` and `BookSimilarities` exist and contain a minimum number of records.
