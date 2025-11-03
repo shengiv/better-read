@@ -1,0 +1,27 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "CloudFormation template for EventBridge Rulerun-recommender-on-upload",
+  "Resources": {
+    "Rule54b49d4c": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "Name": "run-recommender-on-upload",
+        "EventPattern": "{\"source\":[\"aws.s3\"],\"detail-type\":[\"Object Created\"],\"detail\":{\"bucket\":{\"name\":[\"book-recommender-raw-data\"]}}}",
+        "State": "ENABLED",
+        "Description": "",
+        "EventBusName": "default",
+        "Targets": [{
+          "Id": "Ida7b64e2f-d852-4282-9b87-187c62860dea",
+          "Arn": {
+            "Fn::Sub": "arn:${AWS::Partition}:states:${AWS::Region}:${AWS::AccountId}:stateMachine:book-recommender-pipeline"
+          },
+          "RoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/service-role/Amazon_EventBridge_Invoke_Step_Functions_972758326",
+          "RetryPolicy": {
+            "MaximumRetryAttempts": 15
+          }
+        }]
+      }
+    }
+  },
+  "Parameters": {}
+}
