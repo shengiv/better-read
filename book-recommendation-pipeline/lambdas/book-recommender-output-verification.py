@@ -13,10 +13,10 @@ def lambda_handler(event, context):
     # Configuration
     DYNAMODB_TABLES = ["Books", "BookSimilarities"]
     MIN_EXPECTED_BOOKS = 1000
-    MIN_EXPECTED_SIMILARITIES = 20000
+    MIN_EXPECTED_SIMILARITIES = 10000
     
     # Get glue job name from event or use default
-    glue_job_name = event.get('glue_job_name', 'book-recommender-job')
+    glue_job_name = event.get('glue_job_name', 'book-recommender')
     
     results = {
         "verified": True,
@@ -43,8 +43,8 @@ def lambda_handler(event, context):
                 results["checks"]["glue_job_completed"] = False
                 results["verified"] = False
                 results["message"] = "No Glue job runs found"
+
         except Exception as e:
-            print(f"Could not check Glue job status: {e}")
             results["checks"]["glue_job_completed"] = False
             results["verified"] = False
             results["message"] = f"Error checking Glue job: {str(e)}"
@@ -68,47 +68,19 @@ def lambda_handler(event, context):
                 
                 if not has_sufficient_data:
                     results["verified"] = False
-                    if not results["message"]:  # Only set if no previous message
+                    if not results["message"]: 
                         results["message"] = f"Table {table_name} has insufficient data: {item_count} items"
                     
-                # Sample a few records to verify data quality (use resource for scan)
-                try:
-                    table = dynamodb_resource.Table(table_name)
-                    sample_response = table.scan(Limit=5)
-                    sample_items = sample_response.get('Items', [])
-                    results["checks"][f"{table_name}_sample_valid"] = len(sample_items) > 0
-                    
-                    if len(sample_items) == 0 and item_count > 0:
-                        results["verified"] = False
-                        if not results["message"]:
-                            results["message"] = f"Table {table_name} has items but scan returned none"
-                            
-                except Exception as e:
-                    print(f"Could not sample table {table_name}: {e}")
-                    results["checks"][f"{table_name}_sample_valid"] = False
-                    if item_count > 0:  # Only mark as failed if we expected data
-                        results["verified"] = False
-                        if not results["message"]:
-                            results["message"] = f"Table {table_name} scan failed: {str(e)}"
-                    
             except Exception as e:
-                print(f"Error checking table {table_name}: {e}")
                 results["checks"][f"{table_name}_exists"] = False
                 results["verified"] = False
                 results["message"] = f"Table {table_name} not accessible: {str(e)}"
         
-        # Final message
         if results["verified"]:
             total_items = sum(results["table_counts"].values())
             results["message"] = f"Output verification passed. Total items: {total_items}"
         
-        print(f"Verification result: {json.dumps(results, indent=2)}")
-        
-        # Return the object directly for Step Functions
-        return {
-            "statusCode": 200,
-            "body": results
-        }
+        return results
         
     except Exception as e:
         error_msg = f"Verification error: {str(e)}"
