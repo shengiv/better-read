@@ -1,0 +1,79 @@
+{
+  "Comment": "Book recommender workflow",
+  "StartAt": "ValidateInput",
+  "States": {
+    "ValidateInput": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:ap-southeast-1:<ACCOUNT_ID>:function:book-recommender-input-validation",
+      "ResultPath": "$.input_validation",
+      "Next": "CheckInputValid",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "FailState"
+        }
+      ]
+    },
+    "CheckInputValid": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.input_validation.valid",
+          "BooleanEquals": true,
+          "Next": "StartGlueJob"
+        }
+      ],
+      "Default": "FailState"
+    },
+    "StartGlueJob": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "book-recommender"
+      },
+      "Next": "VerifyOutput",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "FailState"
+        }
+      ]
+    },
+    "VerifyOutput": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:ap-southeast-1:<ACCOUNT_ID>:function:book-recommender-output-verification",
+      "ResultPath": "$.output_verification",
+      "Next": "CheckOutputVerified",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "FailState"
+        }
+      ]
+    },
+    "CheckOutputVerified": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.output_verification.verified",
+          "BooleanEquals": true,
+          "Next": "SuccessState"
+        }
+      ],
+      "Default": "FailState"
+    },
+    "SuccessState": {
+      "Type": "Succeed"
+    },
+    "FailState": {
+      "Type": "Fail",
+      "Cause": "Workflow failed due to validation or verification error"
+    }
+  }
+}
