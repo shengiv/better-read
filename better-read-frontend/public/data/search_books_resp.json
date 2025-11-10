@@ -1,0 +1,62 @@
+{
+  "books": [
+    {
+      "isbn": "0684717603",
+      "title": "The GREAT GATSBY (Scribner Classic)",
+      "author": "F. Scott Fritzgerald",
+      "year_of_publication": 1920.0,
+      "publisher": "Scribner Paper Fiction"
+    },
+    {
+      "isbn": "068416325X",
+      "title": "The GREAT GATSBY (Scribner Classic)",
+      "author": "F. Scott Fitzgerald",
+      "year_of_publication": 1979.0,
+      "publisher": "Scribner Paper Fiction"
+    },
+    {
+      "isbn": "0684801523",
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "year_of_publication": 1995.0,
+      "publisher": "Scribner"
+    },
+    {
+      "isbn": "0020199600",
+      "title": "GREAT GATSBY (REISSUE)",
+      "author": "F. Scott Fitzgerald",
+      "year_of_publication": 1988.0,
+      "publisher": "Scribner Paper Fiction"
+    },
+    {
+      "isbn": "185326041X",
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "year_of_publication": 1999.0,
+      "publisher": "Lb May &amp; Assoc Inc"
+    },
+    {
+      "isbn": "0020198817",
+      "title": "The GREAT GATSBY (A Scribner Classic)",
+      "author": "F. Scott Fitzgerald",
+      "year_of_publication": 1992.0,
+      "publisher": "Scribner Paper Fiction"
+    },
+    {
+      "isbn": "3257201834",
+      "title": "Der Grobe Gatsby/the Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "year_of_publication": 1994.0,
+      "publisher": "Distribooks Inc"
+    },
+    {
+      "isbn": "0684830426",
+      "title": "The Great Gatsby (Scribner Classics)",
+      "author": "F. Scott Fitzgerald",
+      "year_of_publication": 1996.0,
+      "publisher": "Scribner"
+    }
+  ],
+  "search_term": "gatsby",
+  "count": 8
+}
