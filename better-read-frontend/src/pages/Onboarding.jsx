@@ -3,6 +3,39 @@ import { useNavigate } from 'react-router-dom';
 import './Onboarding.css';
 import { fetchUserAttributes, updateUserAttributes } from 'aws-amplify/auth';
 
+
+const API_GATEWAY = 'https://8cekws5yt5.execute-api.ap-southeast-1.amazonaws.com/prod';
+const addBook = async (userId, isbn, rating) => {
+  try {
+    const body = JSON.stringify({
+        user_id: userId,
+        isbn: isbn,
+        rating: rating,
+      });
+    const resp = await fetch(`${API_GATEWAY}/ratings`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: body,
+    });
+
+    if (!resp.ok) {
+      console.error("Failed to update rating:", resp.status);
+      return false;
+    }
+
+    const data = await resp.json();
+    return data;
+  } catch (err) {
+    console.error("Error updating rating:", err);
+    return false;
+  }
+};
+
+
+
 export default function Onboarding() {
   const navigate = useNavigate();
   const [books, setBooks] = useState([]);
@@ -11,9 +44,8 @@ export default function Onboarding() {
   const [coverUrls, setCoverUrls] = useState({});
   const [loadingIndex, setLoadingIndex] = useState(null);
   const [searchInput, setSearchInput] = useState('');
+  const [userId, setUserId] = useState(null);
   const debounceRef = useRef();
-
-  const API_GATEWAY = 'https://8cekws5yt5.execute-api.ap-southeast-1.amazonaws.com/prod';
 
   // Remove a book input
   const handleRemoveBook = (isbn) => {
@@ -62,10 +94,9 @@ export default function Onboarding() {
   };
 
   // When a suggestion is clicked
-  const handleSelectBook = (selectedBook) => {
+  const handleSelectBook = async (selectedBook) => {
     if (!books.find((b) => b.isbn === selectedBook.isbn)) {
       const newBooks = [...books, selectedBook];
-      console.log(newBooks);
       setBooks(newBooks);
     }
     setSearchResults([]);
@@ -89,6 +120,9 @@ export default function Onboarding() {
 
       const afterAttrs = await fetchUserAttributes();
       console.log('Verified updated attributes:', afterAttrs);
+      books.forEach(async (book) => {
+        const res = await addBook(userId, book.isbn, 0);
+      });
 
       // Wait a moment for propagation
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -103,7 +137,10 @@ export default function Onboarding() {
   };
 
   useEffect(() => {
-    setBooks([]);
+    (async () => {
+      const attrs = await fetchUserAttributes();
+      setUserId(attrs.sub);
+    })();
   }, []);
 
   return (
@@ -122,7 +159,9 @@ export default function Onboarding() {
           }}
         />
 
-        {loadingIndex === 0 && <div className="onboarding-dropdown" style={{marginRight: 4 + 'px'}}>Loading...</div>}
+        {loadingIndex === 0 && <div className="onboarding-dropdown">
+          <p className="onboarding-dropdown-item">Loading...</p>
+        </div>}
 
         {searchResults.length > 0 && (
           <ul className="onboarding-dropdown">

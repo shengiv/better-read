@@ -4,6 +4,10 @@ import "./BookDetails.css"
 
 const APP_CODE = 'DEV-ChengSeong'
 const API_KEY = 'Eni2DU|r#E)1x1~o5]uf}#_+@?IG(E^F'
+const BASE_URL =
+  import.meta.env.DEV
+    ? '/nlb-branch-api'
+    : 'https://openweb.nlb.gov.sg/api/v2/Catalogue';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -35,7 +39,7 @@ async function fetchBookDescription(isbn) {
 }
 
 async function getBranches(branchCodes) {
-  const url = `/nlb-branch-api/GetBranches?BranchCodes=${encodeURIComponent(branchCodes.join(","))}`;
+  const url = `${BASE_URL}/GetBranches?BranchCodes=${encodeURIComponent(branchCodes.join(","))}`;
   try {
     const resp = await fetch(url, {
       headers: {

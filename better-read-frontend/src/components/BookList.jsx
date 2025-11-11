@@ -17,11 +17,11 @@ const BASE_URL =
     : 'https://openweb.nlb.gov.sg/api/v2/Catalogue';
 
 const limiter = new Bottleneck({
-  minTime: 1100,
-
+  minTime: 3000,
+  maxConcurrent: 1,
   reservoir: 15,
   reservoirRefreshAmount: 15,
-  reservoirRefreshInterval: 60 * 1100,
+  reservoirRefreshInterval: 60 * 1000,
 })
 
 async function searchTitles(title) {
@@ -133,13 +133,11 @@ export default function BookList({ books }) {
 
   useEffect(() => {
     setLoadingState(true);
-    // Fetch covers for each book when the component mounts
     const fetchCovers = async () => {
       const newCoverUrls = {};
       const newAvailability = {};
       const newAvailabilityInfo = {};
 
-      // Process books sequentially with delay
       for (const book of books) {
         const coverUrl = await fetchBookCover(book.isbn);
         newCoverUrls[book.isbn] = coverUrl;
@@ -152,6 +150,10 @@ export default function BookList({ books }) {
           const brn = titleData.records[0].brn;
           const availabilityInfo = await getAvailabilityInfo(brn);
           newAvailabilityInfo[book.isbn] = availabilityInfo;
+          if (!availabilityInfo || availabilityInfo.length === 0) {
+            newAvailability[book.isbn] = "Not Found in NLB";
+            continue;
+          }
           newAvailability[book.isbn] = availabilityInfo.some(item => item.status.name === "On Shelf") ? "Available" : "Unavailable";
         }
 

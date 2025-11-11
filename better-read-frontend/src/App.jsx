@@ -18,8 +18,6 @@ function App({ signOut, user }) {
 
   const shouldShowNavbar = location.pathname !== '/onboarding';
 
-  console.log(user);
-
   useEffect(() => {
     if (!user) {
       return null; // Cognito's UI will handle the authentication
@@ -27,7 +25,6 @@ function App({ signOut, user }) {
     const checkAttributes = async () => {
       try {
         const attrs = await fetchUserAttributes();
-        console.log('User attributes on App load: ', attrs);
         if (!attrs['custom:onBoardingComplete'] || attrs['custom:onBoardingComplete'] !== 'true') {
           navigate('/onboarding');
         }

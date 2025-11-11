@@ -15,15 +15,17 @@ export default function Discover() {
         const res = await fetch(`${API_GATEWAY}/books?limit=1000`);
         const data = await res.json();
         setBooks(data.books);
-        setDisplayBooks(data.books.slice(0, 5));
+        if (!displayBooks || displayBooks.length === 0) {
+          const shuffled = data.books.sort(() => 0.5 - Math.random());
+          setDisplayBooks(shuffled.slice(0, 5));
+        }
       } catch (err) {
         console.error("Error loading discovery books: ", err);
       }
     };
-    if (books.length > 0) {
-      return;
+    if (books.length === 0) {
+      fetchDiscovery();
     }
-    fetchDiscovery();
   }, []);
 
   const refreshBooks = () => {
