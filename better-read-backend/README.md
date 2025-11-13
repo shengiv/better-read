@@ -185,12 +185,6 @@ Handles CORS preflight (OPTIONS) requests for all API endpoints.
 
 **Response**: Returns appropriate CORS headers based on the requested path.
 
-**Allowed Methods by Path**:
-- `/books`: GET, OPTIONS
-- `/books/search`: GET, OPTIONS
-- `/recommendations`: POST, OPTIONS
-- `/ratings`: GET, PUT, OPTIONS
-
 ---
 
 ## Environment Variables
@@ -222,8 +216,8 @@ All Lambda functions require the following Python packages:
 
 ### Similarities Table
 - **Partition Key**: `isbn` (String)
-- **Sort Key**: `similar_isbn` (String)
-- **Attributes**: `similarity_score` (Number)
+- **Sort Key**: `rank` (Number)
+- **Attributes**: `similar_isbn` (String), `similarity_score` (Number)
 
 ## Error Handling
 
