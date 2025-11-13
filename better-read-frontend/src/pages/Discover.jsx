@@ -5,7 +5,7 @@ import "./Discover.css"
 
 export default function Discover() {
 
-  const API_GATEWAY = 'https://8cekws5yt5.execute-api.ap-southeast-1.amazonaws.com/prod';
+  const API_GATEWAY = import.meta.env.API_GATEWAY;
   const [books, setBooks] = useState([]);
   const [displayBooks, setDisplayBooks] = useState([]);
   

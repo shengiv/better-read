@@ -6,7 +6,7 @@ import BookList from "../components/BookList";
 
 import "./Home.css"
 
-const API_GATEWAY = 'https://8cekws5yt5.execute-api.ap-southeast-1.amazonaws.com/prod';
+const API_GATEWAY = import.meta.env.API_GATEWAY;
 
 async function getRecommendations(books) {
   try {

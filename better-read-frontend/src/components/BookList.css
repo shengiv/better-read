@@ -11,7 +11,7 @@
   gap: 1rem;
   margin-top: 1rem;
   overflow-y: auto;
-  max-height: 75vh;
+  max-height: 70vh;
   padding-right: 0.5rem;
   scrollbar-width: none;
 }

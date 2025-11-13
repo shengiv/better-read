@@ -4,7 +4,7 @@ import './Onboarding.css';
 import { fetchUserAttributes, updateUserAttributes } from 'aws-amplify/auth';
 
 
-const API_GATEWAY = 'https://8cekws5yt5.execute-api.ap-southeast-1.amazonaws.com/prod';
+const API_GATEWAY = import.meta.env.API_GATEWAY;
 const addBook = async (userId, isbn, rating) => {
   try {
     const body = JSON.stringify({

@@ -5,12 +5,15 @@ import { Amplify } from 'aws-amplify';
 import '@aws-amplify/ui-react/styles.css';
 import App from './App';
 import './index.css';
-import awsmobile from './aws-exports';
+import { withAuthenticator } from '@aws-amplify/ui-react';
+import awsconfig from './config/aws-exports';
 
-Amplify.configure(awsmobile);
+Amplify.configure(awsconfig);
+
+const AppWithAuth = withAuthenticator(App);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <App />
+    <AppWithAuth />
   </BrowserRouter>
 );

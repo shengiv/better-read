@@ -4,9 +4,9 @@ import Bottleneck from "bottleneck";
 import ViewToggle from "../components/ViewToggle";
 import "./BookList.css"
 
+const API_KEY = import.meta.env.API_KEY
+const APP_CODE = import.meta.env.APP_CODE
 
-const APP_CODE = 'DEV-ChengSeong'
-const API_KEY = 'Eni2DU|r#E)1x1~o5]uf}#_+@?IG(E^F'
 const coversCache = {};
 const titlesCache = {};
 const availabilityCache = {};

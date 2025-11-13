@@ -6,7 +6,6 @@ import BookDetails from "./pages/BookDetails";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
 import Onboarding from "./pages/Onboarding";
-import { withAuthenticator } from '@aws-amplify/ui-react';
 import { fetchUserAttributes } from "@aws-amplify/auth";
 
 
@@ -55,4 +54,4 @@ function App({ signOut, user }) {
   );
 }
 
-export default withAuthenticator(App);
+export default App;

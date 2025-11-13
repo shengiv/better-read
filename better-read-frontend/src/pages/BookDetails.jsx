@@ -2,8 +2,9 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import "./BookDetails.css"
 
-const APP_CODE = 'DEV-ChengSeong'
-const API_KEY = 'Eni2DU|r#E)1x1~o5]uf}#_+@?IG(E^F'
+const API_KEY = import.meta.env.API_KEY
+const APP_CODE = import.meta.env.APP_CODE
+
 const BASE_URL =
   import.meta.env.DEV
     ? '/nlb-branch-api'
@@ -195,7 +196,9 @@ export default function BookDetails() {
         </div>
       </div>
       {loading ? (
-        <div className="details-spinner" />
+        <div className="spinner-container">
+          <div className="details-spinner" />
+        </div>
       ) : getAvailabilityInfo(availabilityInfo) === "Not Found in NLB" ? (
         <p className="description-notfoundinnlb">{description}</p>
       ) : (
