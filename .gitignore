@@ -1,3 +1,4 @@
 better-read-frontend/src/config/
 better-read-frontend/src/api/
 better-read-frontend/.env
+.DS_Store
