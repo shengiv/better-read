@@ -4,7 +4,7 @@ import './Onboarding.css';
 import { fetchUserAttributes, updateUserAttributes } from 'aws-amplify/auth';
 
 
-const API_GATEWAY = import.meta.env.API_GATEWAY;
+const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
 const addBook = async (userId, isbn, rating) => {
   try {
     const body = JSON.stringify({

@@ -6,7 +6,7 @@ import BookList from "../components/BookList";
 
 import "./Home.css"
 
-const API_GATEWAY = import.meta.env.API_GATEWAY;
+const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
 
 async function getRecommendations(books) {
   try {

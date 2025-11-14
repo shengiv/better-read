@@ -4,17 +4,12 @@ import Bottleneck from "bottleneck";
 import ViewToggle from "../components/ViewToggle";
 import "./BookList.css"
 
-const API_KEY = import.meta.env.API_KEY
-const APP_CODE = import.meta.env.APP_CODE
-
 const coversCache = {};
 const titlesCache = {};
 const availabilityCache = {};
 
 const BASE_URL =
-  import.meta.env.DEV
-    ? 'nlb-api'
-    : 'https://openweb.nlb.gov.sg/api/v2/Catalogue';
+  import.meta.env.VITE_API_PROXY
 
 const limiter = new Bottleneck({
   minTime: 3000,
@@ -28,18 +23,10 @@ async function searchTitles(title) {
   if (titlesCache[title]) {
     return titlesCache[title];
   }
-  const availability = true;
-  const limit = 100;
-  const url = `/${BASE_URL}/SearchTitles?Keywords=${encodeURIComponent(title)}&Availability=${encodeURIComponent(availability)}&Limit=${limit}`;
+  const url = `${BASE_URL}/SearchTitles?title=${encodeURIComponent(title)}`;
   try {
     const data = await limiter.schedule(async () => {
-      const resp = await fetch(url, {
-        headers: {
-          'X-App-Code': APP_CODE,
-          'Accept': 'application/json',
-          'X-Api-Key': API_KEY
-        }
-      });
+      const resp = await fetch(url)
 
       if (!resp.ok) {
         console.log(`API error for Title ${title}: ${resp.status}`);
@@ -71,16 +58,10 @@ async function getAvailabilityInfo(brn) {
   if (availabilityCache[brn]) {
     return availabilityCache[brn];
   }
-  const url = `/${BASE_URL}/GetAvailabilityInfo?BRN=${encodeURIComponent(brn)}`;
+  const url = `${BASE_URL}/GetAvailabilityInfo?BRN=${encodeURIComponent(brn)}`;
   try {
     const data = await limiter.schedule(async () => {
-      const resp = await fetch(url, {
-        headers: {
-          'X-App-Code': APP_CODE,
-          'Accept': 'application/json',
-          'X-Api-Key': API_KEY
-        }
-      });
+      const resp = await fetch(url)
 
       if (!resp.ok) {
         console.log(`API error for BRN ${brn}: ${resp.status}`);

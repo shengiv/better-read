@@ -5,7 +5,7 @@ import "./Discover.css"
 
 export default function Discover() {
 
-  const API_GATEWAY = import.meta.env.API_GATEWAY;
+  const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
   const [books, setBooks] = useState([]);
   const [displayBooks, setDisplayBooks] = useState([]);
   

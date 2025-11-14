@@ -2,13 +2,8 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import "./BookDetails.css"
 
-const API_KEY = import.meta.env.API_KEY
-const APP_CODE = import.meta.env.APP_CODE
-
 const BASE_URL =
-  import.meta.env.DEV
-    ? '/nlb-branch-api'
-    : 'https://openweb.nlb.gov.sg/api/v2/Catalogue';
+  import.meta.env.VITE_API_PROXY
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -42,13 +37,7 @@ async function fetchBookDescription(isbn) {
 async function getBranches(branchCodes) {
   const url = `${BASE_URL}/GetBranches?BranchCodes=${encodeURIComponent(branchCodes.join(","))}`;
   try {
-    const resp = await fetch(url, {
-      headers: {
-        'X-App-Code': APP_CODE,
-        'Accept': 'application/json',
-        'X-Api-Key': API_KEY
-      }
-    });
+    const resp = await fetch(url)
     if (!resp.ok){
       console.log(`API error for Branch Codes ${branchCodes}: ${resp.status}`);
       return {};
