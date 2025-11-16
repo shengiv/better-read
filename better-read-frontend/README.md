@@ -8,10 +8,12 @@ Better Read leverages AWS serverless architecture to deliver a scalable book rec
 
 ### Frontend
 
-- React
-- Vite
-- AWS Amplify Hosting
-- AWS Amplify Authenticator (Cognito)
+- **React & Vite**: For Development and Building
+- **React Router**: For client-side routing
+- **Fetch**       : For API calls 
+- **AWS Amplify Hosting**: For building, hosting and publishing the application
+- **AWS Amplify Authenticator (Cognito)**: For Authentication
+- **AWS Lambda**  : To act as a proxy for API calls
 
 ### APIs & Data Sources
 - **NLB OpenWeb API**: title search, book availability info, library branch info
