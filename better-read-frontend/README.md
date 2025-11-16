@@ -1,16 +1,39 @@
-# React + Vite
+# Better Read
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Better Read is a cloud-based SaaS providing book recommendations to users. Users can search for books, add books they've read, and receive intelligent recommendations based on their reading preferences using machine learning algorithms.
 
-Currently, two official plugins are available:
+Better Read leverages AWS serverless architecture to deliver a scalable book recommendation system. The application uses collaborative filtering with the Alternating Least Squares (ALS) algorithm to generate personalized book suggestions based on user preferences and book similarity scores.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
 
-## React Compiler
+### Frontend
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- Vite
+- AWS Amplify Hosting
+- AWS Amplify Authenticator (Cognito)
 
-## Expanding the ESLint configuration
+### APIs & Data Sources
+- **NLB OpenWeb API**: title search, book availability info, library branch info
+- **OpenLibrary / Google Books API**: book description, book cover thumbnail
+- **Custom Recommendation API**: book recommendations and rating storage
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Features
+
+- **Recommendation Page** (`Home.jsx`): View personalized recommendations based on books you've rated.
+- **Discover Page** (`Discover.jsx`): Browse randomly selected books from the catalogue, refreshed instantly via a shuffle mechanism
+- **Reading List** (`Profile.jsx`): Add books you've read
+- **Book Details Page** (`BookDetails.jsx`): See full details of book including, title, author, book cover and NLB availability across branches
+
+## Project Structure
+
+```
+src/
+├── components/                   # Reusable UI Components (e.g. Bookcard, Navbar)
+├── pages/                        # Main Pages/Views of the application (e.g. Onboarding, Home)
+├── App.css                       # Styles the overall layout of the application
+├── App.jsx                       # Root component configuring routes and layouts
+├── index.css                     # Styles the overall look and font of the Application
+├── index.html                    # Gets the fonts required from google                   
+└── main.jsx                      # Entry point that mounts React and Authenticator to the DOM
+```
